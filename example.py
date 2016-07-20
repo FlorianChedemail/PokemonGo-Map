@@ -69,6 +69,7 @@ api_endpoint = None
 pokemons = {}
 gyms = {}
 pokestops = {}
+stepmarkers = []
 numbertoteam = {  # At least I'm pretty sure that's it. I could be wrong and then I'd be displaying the wrong owner team of gyms.
     0: 'Gym',
     1: 'Mystic',
@@ -608,6 +609,7 @@ def main():
             (dx, dy) = (-dy, dx)
 
         (x, y) = (x + dx, y + dy)
+        stepmarkers.append([FLOAT_LAT, FLOAT_LONG])
 
         process_step(args, api_endpoint, access_token, profile_response,
                      pokemonsJSON, ignore, only)
@@ -889,6 +891,13 @@ def get_pokemarkers():
                 'lng': stop[1],
                 'infobox': 'Pokestop',
             })
+    for step in stepmarkers:
+        pokeMarkers.append({
+            'type': 'step',
+            'icon': icons.dots.red,
+            'lat': step[0],
+            'lng': step[1]
+        })
     return pokeMarkers
 
 
